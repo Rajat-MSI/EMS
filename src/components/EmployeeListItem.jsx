@@ -1,12 +1,20 @@
 import {useNavigate} from "react-router-dom";
+import {deleteEmployeeById} from "../service/EmployeeService.js";
 
-export default function EmployeeListItem({employee})
-{
+export default function EmployeeListItem({employee, getEmployeeList}) {
     const navigate = useNavigate();
-    const updateEmployeeText = "Update";
-    function updateEmployee(id)
-    {
+
+    // const updateEmployeeText = "Update";
+    function updateEmployee(id) {
         navigate(`/update-employee/${id}`);
+    }
+
+    function deleteEmployee(id) {
+        deleteEmployeeById(id).then((response) => {
+            getEmployeeList();
+            console.log(response.data);
+        }).catch((error) => console.log(error));
+        console.log(id);
     }
 
     return (
@@ -15,9 +23,15 @@ export default function EmployeeListItem({employee})
                 <div className="card-title h6 p-2 border-bottom">
                     EMPLOYEE ID - {employee.id}
                     <div className="float-end">
+                        <button className="btn btn-danger" onClick={() => deleteEmployee(employee.id)}>
+                            <i className="bi bi-trash3 h6"></i>
+                            {/*<div className="h6 m-0">{updateEmployeeText}</div>*/}
+                        </button>
+                    </div>
+                    <div className="float-end me-1">
                         <button className="btn btn-success" onClick={() => updateEmployee(employee.id)}>
-                            <i className="bi bi-arrow-repeat pe-1"></i>
-                            {updateEmployeeText}
+                            <i className="bi bi-arrow-repeat h6"></i>
+                            {/*<div className="h6 m-0">{updateEmployeeText}</div>*/}
                         </button>
                     </div>
                 </div>

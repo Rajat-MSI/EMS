@@ -1,6 +1,6 @@
 import PageTitle from "./PageTitle.jsx";
 import {useEffect, useState} from "react";
-import {getEmployee, saveEmployee} from "../service/EmployeeService.js";
+import {getEmployee, saveEmployee, updateEmployee} from "../service/EmployeeService.js";
 import {useParams} from "react-router-dom";
 
 export default function AddEmployee({pageTitle}) {
@@ -27,6 +27,12 @@ export default function AddEmployee({pageTitle}) {
                 console.log(error)
             })
         }
+        else
+        {
+            setFirstName("");
+            setLastName("");
+            setEmail("");
+        }
     }, [id]);
 
     function saveEmployeeForm(e)
@@ -35,7 +41,15 @@ export default function AddEmployee({pageTitle}) {
         if(validateForm())
         {
             const employee = {firstName,lastName,email};
-            saveEmployee(employee).then(response => console.log(response.data));
+            if(!id)
+            {
+
+                saveEmployee(employee).then(response => console.log(response.data));
+            }
+            else
+            {
+                updateEmployee(employee,id).then(response => console.log(response.data));
+            }
         }
     }
 
